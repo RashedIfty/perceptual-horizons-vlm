@@ -1,0 +1,9 @@
+{
+ "model": "Qwen/Qwen3-VL-4B-Instruct",
+ "method": "ug",
+ "images": 347,
+ "s_per_image": 49.977964450715255,
+ "peak_mem_gib": [
+  9.2
+ ]
+}

@@ -1,0 +1,5 @@
+{
+ "gpu0": [
+  {"name": "q25_3b_see", "model": "Qwen/Qwen2.5-VL-3B-Instruct", "clamp": true, "method": "see", "image_ids": "{DATA}/baseline_ids.txt", "hours": 11.0}
+ ]
+}

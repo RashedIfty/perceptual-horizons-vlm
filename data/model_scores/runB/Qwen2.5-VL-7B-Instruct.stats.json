@@ -1,0 +1,14 @@
+{
+ "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+ "images": 3349,
+ "s_per_image": 4.211896626406123,
+ "n_prefix_tok": 1840.0,
+ "nan_frac": 0.0,
+ "yn_mass_mean": 0.9999611570475467,
+ "yn_mass_p05": 0.9997959136962891,
+ "acc@0.5": 0.8670343766033863,
+ "peak_mem_gib": [
+  8.4,
+  9.4
+ ]
+}

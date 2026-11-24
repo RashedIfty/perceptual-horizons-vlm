@@ -1,0 +1,13 @@
+{
+ "model": "OpenGVLab/InternVL3-2B-hf",
+ "images": 3359,
+ "s_per_image": 1.8250614626487829,
+ "n_prefix_tok": 2310.0,
+ "nan_frac": 0.0,
+ "yn_mass_mean": 0.9998541175160448,
+ "yn_mass_p05": 0.9994308948516846,
+ "acc@0.5": 0.8770462451401678,
+ "peak_mem_gib": [
+  5.5
+ ]
+}

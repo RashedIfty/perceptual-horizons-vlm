@@ -1,0 +1,5 @@
+{
+ "both": [
+  {"name": "q25_7b_missing", "model": "Qwen/Qwen2.5-VL-7B-Instruct", "image_ids": "{DATA}/missing_7b_ids.txt", "hours": 1.0}
+ ]
+}

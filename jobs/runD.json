@@ -1,0 +1,57 @@
+{
+ "both_first": true,
+ "both": [
+  {
+   "name": "ivl3_8b_full",
+   "model": "OpenGVLab/InternVL3-8B-hf",
+   "hours": 4.4
+  }
+ ],
+ "gpu0": [
+  {
+   "name": "q25_3b_ug_p2",
+   "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+   "clamp": true,
+   "method": "ug",
+   "part": "p2",
+   "image_ids": "{DATA}/baseline_test_ids.txt",
+   "hours": 5.0
+  },
+  {
+   "name": "q25_3b_vicrop",
+   "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+   "clamp": true,
+   "method": "vicrop",
+   "image_ids": "{DATA}/baseline_ids.txt",
+   "hours": 1.6
+  },
+  {
+   "name": "q25_3b_see",
+   "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+   "clamp": true,
+   "method": "see",
+   "image_ids": "{DATA}/baseline_ids.txt",
+   "full_scores": "{OUT}/Qwen2.5-VL-3B-Instruct.parquet",
+   "hours": 1.2
+  }
+ ],
+ "gpu1": [
+  {
+   "name": "q25_3b_hflip",
+   "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+   "clamp": true,
+   "view": "hflip",
+   "templates": "0",
+   "hours": 3.0
+  },
+  {
+   "name": "q3_4b_fi_act",
+   "script": "fi.py",
+   "model": "Qwen/Qwen3-VL-4B-Instruct",
+   "image_ids": "{DATA}/baseline_test_ids.txt",
+   "n": 1000,
+   "configs": "vision:act:none,llm:act:none,vision:act:ranger,llm:act:ranger",
+   "hours": 4.0
+  }
+ ]
+}

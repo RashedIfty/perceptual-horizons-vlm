@@ -1,0 +1,14 @@
+{
+ "model": "OpenGVLab/InternVL3-8B-hf",
+ "images": 3359,
+ "s_per_image": 4.496252153061017,
+ "n_prefix_tok": 2310.0,
+ "nan_frac": 0.0,
+ "yn_mass_mean": 0.9999871676456521,
+ "yn_mass_p05": 0.9999446123838425,
+ "acc@0.5": 0.8734653161448741,
+ "peak_mem_gib": [
+  8.6,
+  9.5
+ ]
+}

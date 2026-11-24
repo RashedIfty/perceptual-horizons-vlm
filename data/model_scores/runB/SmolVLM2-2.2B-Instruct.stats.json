@@ -1,0 +1,13 @@
+{
+ "model": "HuggingFaceTB/SmolVLM2-2.2B-Instruct",
+ "images": 3359,
+ "s_per_image": 1.4343059938839058,
+ "n_prefix_tok": 1086.0,
+ "nan_frac": 0.0,
+ "yn_mass_mean": 0.9975767822957903,
+ "yn_mass_p05": 0.9930285811424255,
+ "acc@0.5": 0.8331542868835686,
+ "peak_mem_gib": [
+  6.8
+ ]
+}

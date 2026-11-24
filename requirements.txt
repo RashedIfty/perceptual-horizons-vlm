@@ -1,0 +1,12 @@
+numpy
+pandas
+pyarrow
+scipy
+statsmodels
+matplotlib
+Pillow
+# GPU scoring (kaggle/bundle):
+torch
+transformers==4.57.1
+accelerate>=1.0
+num2words

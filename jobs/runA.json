@@ -1,0 +1,15 @@
+{
+ "gpu0": [
+  {"name": "q3_4b_full",  "model": "Qwen/Qwen3-VL-4B-Instruct", "hours": 3.0},
+  {"name": "q3_4b_tile0", "model": "Qwen/Qwen3-VL-4B-Instruct", "view": "tile0", "templates": "0", "hours": 2.6},
+  {"name": "q3_4b_tile1", "model": "Qwen/Qwen3-VL-4B-Instruct", "view": "tile1", "templates": "0", "hours": 2.6}
+ ],
+ "gpu1": [
+  {"name": "ivl3_2b_full", "model": "OpenGVLab/InternVL3-2B-hf", "hours": 2.2},
+  {"name": "q3_4b_tile2",  "model": "Qwen/Qwen3-VL-4B-Instruct", "view": "tile2", "templates": "0", "hours": 2.6},
+  {"name": "q3_4b_vcd",    "model": "Qwen/Qwen3-VL-4B-Instruct", "view": "vcd", "templates": "0", "hours": 2.6}
+ ],
+ "both": [
+  {"name": "q3_8b_full", "model": "Qwen/Qwen3-VL-8B-Instruct", "hours": 4.0}
+ ]
+}

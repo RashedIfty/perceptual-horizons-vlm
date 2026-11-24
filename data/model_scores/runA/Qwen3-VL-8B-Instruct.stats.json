@@ -1,0 +1,14 @@
+{
+ "model": "Qwen/Qwen3-VL-8B-Instruct",
+ "images": 3359,
+ "s_per_image": 3.6494750708971537,
+ "n_prefix_tok": 1405.0,
+ "nan_frac": 0.0,
+ "yn_mass_mean": 0.9999999517534124,
+ "yn_mass_p05": 0.9999997019767761,
+ "acc@0.5": 0.9065889093513403,
+ "peak_mem_gib": [
+  8.9,
+  10.8
+ ]
+}

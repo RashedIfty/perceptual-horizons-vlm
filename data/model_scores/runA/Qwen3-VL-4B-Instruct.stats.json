@@ -1,0 +1,13 @@
+{
+ "model": "Qwen/Qwen3-VL-4B-Instruct",
+ "images": 3359,
+ "s_per_image": 2.6724940869523572,
+ "n_prefix_tok": 1405.0,
+ "nan_frac": 0.0,
+ "yn_mass_mean": 0.9999999301288912,
+ "yn_mass_p05": 0.9999996423721313,
+ "acc@0.5": 0.9069470022508697,
+ "peak_mem_gib": [
+  11.3
+ ]
+}

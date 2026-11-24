@@ -1,0 +1,11 @@
+{
+ "models": [
+  "Qwen3-VL-8B-Instruct",
+  "Qwen3-VL-4B-Instruct",
+  "Qwen2.5-VL-7B-Instruct",
+  "InternVL3-8B-hf",
+  "InternVL3-2B-hf",
+  "Qwen2.5-VL-3B-Instruct",
+  "SmolVLM2-2.2B-Instruct"
+ ]
+}

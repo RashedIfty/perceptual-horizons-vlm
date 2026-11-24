@@ -1,0 +1,12 @@
+{
+ "gpu0": [
+  {"name": "q3_4b_ug_p1",  "model": "Qwen/Qwen3-VL-4B-Instruct", "method": "ug", "part": "p1", "image_ids": "{DATA}/baseline_calib_ids.txt", "hours": 5.6},
+  {"name": "q3_4b_vicrop", "model": "Qwen/Qwen3-VL-4B-Instruct", "method": "vicrop", "image_ids": "{DATA}/baseline_ids.txt", "hours": 1.8},
+  {"name": "q3_4b_see",    "model": "Qwen/Qwen3-VL-4B-Instruct", "method": "see", "image_ids": "{DATA}/baseline_ids.txt", "full_scores": "{OUT}/Qwen3-VL-4B-Instruct.parquet", "hours": 1.2},
+  {"name": "q3_4b_hflip",  "model": "Qwen/Qwen3-VL-4B-Instruct", "view": "hflip", "templates": "0", "hours": 2.6}
+ ],
+ "gpu1": [
+  {"name": "q3_4b_ug_p2",  "model": "Qwen/Qwen3-VL-4B-Instruct", "method": "ug", "part": "p2", "image_ids": "{DATA}/baseline_test_ids.txt", "hours": 5.6},
+  {"name": "q25_3b_ug_p1", "model": "Qwen/Qwen2.5-VL-3B-Instruct", "clamp": true, "method": "ug", "part": "p1", "image_ids": "{DATA}/baseline_calib_ids.txt", "hours": 5.0}
+ ]
+}
