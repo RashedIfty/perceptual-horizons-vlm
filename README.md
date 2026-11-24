@@ -1,5 +1,7 @@
 # Perceptual horizons and silent failures of vision-language models in autonomous driving
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24507275.svg)](https://doi.org/10.5281/zenodo.24507275)
+
 Code and data for the manuscript *Perceptual horizons and silent failures of vision-language models in autonomous driving* (Rashedul Arefin Ifty and Nasif Shahriar Ifaz; submitted to *Scientific Reports*).
 
 The study tests seven open vision-language models (VLMs) as pedestrian detectors on 3,359 nuScenes front-camera frames:
@@ -46,4 +48,4 @@ Software: Python 3.11+, PyTorch, Hugging Face Transformers 4.57.1 (GPU runs), pa
 
 ## Citation
 
-Please cite the article once published; citation details will be added here.
+Please cite the article once published; citation details will be added here. To cite this code and data, use the Zenodo archive: https://doi.org/10.5281/zenodo.24507275 (all versions).
