@@ -83,7 +83,7 @@ def main():
     rbox(ax, 1, 13.6, 32, 8.0, fc=PANEL, ec=GRID)
     ax.text(2.4, 19.7, "Reference label (Eqs. 1–2)", fontsize=6, fontweight="bold", color=INK,
             va="center")
-    ax.text(2.4, 16.8, "$y^{\\star}=1$: projected box with a lidar return\nderived from 3D annotations, no human or model judge",
+    ax.text(2.4, 16.8, "$y^{\\star}=1$: projected box with a lidar return\nderived from the 3D annotations",
             fontsize=5.6, color=INK, va="center", linespacing=1.25)
     ax.text(17, 10.3, "3,359 frames · 821 scenes · 5 strata (city × condition)\n"
             "6 classes × 2 wordings = 39,096 questions",
@@ -165,11 +165,11 @@ def main():
     a2.text(0.04, 0.96, "$\\kappa_Z$ = 0.85", transform=a2.transAxes, fontsize=4.6, va="top", color=INK)
 
     a3 = axes_at(fig, 87.0, 18.3, 11.2, 5.6); tidy(a3)
-    a3.bar([0, 1], [4.2, 0.04], color=[MAG, GRID], width=0.55)
+    a3.bar([0, 1], [3.75, 0.075], color=[MAG, GRID], width=0.55)
     a3.set_yscale("log"); a3.set_ylim(0.01, 10)
     a3.set_xticks([0, 1], ["near $\\tau$", "confident"], fontsize=4.4)
     a3.set_ylabel("flip rate (%)", fontsize=4.5, labelpad=0.5)
-    a3.text(0.5, 0.97, "106×", transform=a3.transAxes, fontsize=4.8, ha="center", va="top", color=INK)
+    a3.text(0.5, 0.97, "50×", transform=a3.transAxes, fontsize=4.8, ha="center", va="top", color=INK)
 
     sg = pd.read_csv("results/analysis/safeguard/curves.csv")
     a4 = axes_at(fig, 87.0, 6.0, 11.2, 5.8); tidy(a4)

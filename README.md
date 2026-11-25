@@ -22,6 +22,7 @@ The study tests seven open vision-language models (VLMs) as pedestrian detectors
 | `src/fi_analyze.py` | T3: outcome rates, bit/component/depth breakdown, decision-margin analysis, Ranger effect |
 | `src/safeguard.py` | T4: operating curves, conformal calibration, paired scene-bootstrap differences |
 | `src/rc_zoom.py` | earlier safeguard analysis (conformal risk control and Learn-then-Test) |
+| `src/cluster_crc.py` | question-level, scene-level and stratum-conditional (Mondrian) conformal calibration |
 | `src/figures.py`, `src/fig1_formal.py` | figures of the manuscript |
 | `src/make_supp.py` | tables of the Supplementary Information |
 | `kaggle/bundle/` | scripts run on GPUs: `vlm_score.py` (scoring with KV-cached prefix), `baselines.py` (ViCrop, UG-Search, SEE), `fi.py` (fault injection), frame-id lists |
@@ -30,7 +31,7 @@ The study tests seven open vision-language models (VLMs) as pedestrian detectors
 | `data/model_scores/` | yes-propensity ψ of every model, view and baseline for every question (`*.parquet`) and per-run statistics (`*.stats.json`) |
 | `results/` | analysis outputs used for the figures and tables |
 
-Fault-injection outcomes are stored per configuration as `<model>__fi_<site>_<fault>_<protection>[_hi].parquet` (one row per question and injection, with layer, bit and values before and after the flip), together with the fault-free reference runs (`__fi_golden.parquet`) and the profiled Ranger bounds (`runD`: activation faults on Qwen3-VL-4B; `runE`: weight and exponent-bit faults on Qwen3-VL-4B and all configurations on InternVL3-2B). `runF`/`runF2` hold the SEE outputs for Qwen2.5-VL-3B, and `runB2/Qwen2.5-VL-7B-Instruct_merged.parquet` the complete Qwen2.5-VL-7B scores (all 3,359 frames).
+Fault-injection outcomes are stored per configuration as `<model>__fi_<site>_<fault>_<protection>[_hi].parquet` (one row per question and injection, with layer, bit and values before and after the flip), together with the fault-free reference runs (`__fi_golden.parquet`) and the profiled Ranger bounds (`runD`: activation faults on Qwen3-VL-4B; `runE`: weight and exponent-bit faults on Qwen3-VL-4B and ten configurations on InternVL3-2B; `runG`: exponent-bit activation faults with Ranger on InternVL3-2B; 24 configurations and 24,000 injections in total). `runF`/`runF2` hold the SEE outputs for Qwen2.5-VL-3B, and `runB2/Qwen2.5-VL-7B-Instruct_merged.parquet` the complete Qwen2.5-VL-7B scores (all 3,359 frames).
 
 ## Reproducing
 

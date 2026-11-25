@@ -250,6 +250,14 @@
    "reduction": 0.0,
    "fisher_p": 1.0
   },
+  "InternVL3-2B-hf|llm:act:none:hi": {
+   "sdc_none": 0.003,
+   "sdc_ranger": 0.004,
+   "due_none": 0.036,
+   "due_ranger": 0.0,
+   "reduction": -0.33333333333333326,
+   "fisher_p": 1.0
+  },
   "InternVL3-2B-hf|llm:weight:none:all": {
    "sdc_none": 0.03,
    "sdc_ranger": 0.028,
@@ -265,6 +273,14 @@
    "due_ranger": 0.0,
    "reduction": -1.0,
    "fisher_p": 1.0
+  },
+  "InternVL3-2B-hf|vision:act:none:hi": {
+   "sdc_none": 0.0,
+   "sdc_ranger": 0.005,
+   "due_none": 0.026,
+   "due_ranger": 0.0,
+   "reduction": NaN,
+   "fisher_p": 0.0621875785163488
   },
   "InternVL3-2B-hf|vision:weight:none:all": {
    "sdc_none": 0.038,

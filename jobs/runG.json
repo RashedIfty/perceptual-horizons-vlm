@@ -1,0 +1,6 @@
+{
+ "gpu0": [
+  {"name": "ivl3_2b_fi_hi_ranger", "script": "fi.py", "model": "OpenGVLab/InternVL3-2B-hf", "image_ids": "{DATA}/baseline_test_ids.txt", "n": 1000,
+   "configs": "vision:act:ranger:hi,llm:act:ranger:hi", "hours": 3.0}
+ ]
+}

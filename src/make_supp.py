@@ -90,7 +90,7 @@ def main():
     tex += table(r"\textbf{Fault-injection configurations and outcomes:} share of injections (\%) per outcome class of Eq.~11.",
                  "tab:s_fi", "lllllrrrrrr",
                  r"Model & Site & Fault & Protection & Bits & $n_{\mathrm{inj}}$ & Benign & DUE & SDC-miss & SDC-FA & SDC (any)",
-                 rows, note="All configurations use 350 test frames (70 per stratum) and the six classes in the first wording. Protection: range guard of Eq.~12 (Ranger). SDC (any) includes SDC-other. Wilson 95\\% CIs are within $\\pm$3.1 percentage points for every rate (Eq.~10); intervals for every configuration are shown in Fig.~4a of the main article.")
+                 rows, note="24 configurations, 12 per model. All configurations use 350 test frames (70 per stratum) and the six classes in the first wording. Protection: range guard of Eq.~12 (Ranger). SDC (any) includes SDC-other. Wilson 95\\% CIs are within $\\pm$3.1 percentage points for every rate (Eq.~10); intervals for every configuration are shown in Fig.~4a of the main article.")
 
     # ---------------- S3: safeguard results
     crc = pd.read_csv("results/analysis/safeguard/crc.csv")
@@ -169,6 +169,28 @@ def main():
                  r"Model & Relation & Violations (\%) & Error\,$|$\,viol. (\%) & Error\,$|$\,no viol. (\%) & $\Gamma_r$ & Recall (\%) & $\kappa_r$ ($p$)",
                  rows, size="tiny", sep="2.5pt",
                  note="Mirror and zoom relations were evaluated for the models with mirrored and tiled views (Qwen3-VL-4B; Qwen2.5-VL-3B). Violation rate and $\\Gamma_r$ with scene-bootstrap 95\\% CIs; $\\kappa_r$ is the Spearman correlation across operational cells with its $p$ value.")
+
+    # ---------------- S7: calibration variants
+    q = pd.read_csv("results/analysis/safeguard/cluster_crc.csv")
+    mo = pd.read_csv("results/analysis/safeguard/mondrian_crc.csv")
+    rows = []
+    for model, mlab in (("Qwen3-VL-4B-Instruct", "Qwen3-VL-4B"), ("Qwen2.5-VL-3B-Instruct", "Qwen2.5-VL-3B")):
+        for meth, nm in (("vanilla", "Unaided"), ("fused", "FZ")):
+            for a in (0.1, 0.2):
+                cells = []
+                for kind in ("question", "scene"):
+                    r = q[(q.model == model) & (q.method == meth) & np.isclose(q.alpha, a) & (q.calibration == kind)].iloc[0]
+                    cells += [ci(100 * r.miss_pooled, 100 * r.miss_lo, 100 * r.miss_hi, "{:.1f}"), f"{100 * r.fa:.1f}"]
+                r = mo[(mo.model == model) & (mo.method == meth) & np.isclose(mo.alpha, a)].iloc[0]
+                cells += [ci(100 * r['miss'], 100 * r.miss_lo, 100 * r.miss_hi, "{:.1f}"), f"{100 * r.fa:.1f}"]
+                rows.append(f"{mlab} & {nm} & {a:.1f} & " + " & ".join(cells))
+        rows.append(r"\midrule")
+    rows = rows[:-1]
+    tex += table(r"\textbf{Conformal calibration variants:} realised test miss rate $\mathrm{MR}_{\mathrm{VRU}}$ (\%, scene-bootstrap 95\% CI) and false-alarm rate (\%) at the calibrated threshold.",
+                 "tab:s_crc", "lllcccccc",
+                 r"Model & Method & $\alpha$ & MR question-level & FAR & MR scene-level & FAR & MR stratum-conditional & FAR",
+                 rows, size="tiny", sep="2.5pt",
+                 note="Question-level: Eq.~14 over calibration VRU positives. Scene-level: per-scene miss rates of calibration scenes as the loss. Stratum-conditional (Mondrian): Eq.~14 applied within each stratum. All frames; FZ with the tile weight chosen on calibration scenes. Night-time frames contribute 29.9\\% of the VRU positives in the test scenes and 20.4\\% in the calibration scenes.")
     (OUT / "supp_tables.tex").write_text(tex)
     print("wrote", OUT / "supp_tables.tex")
 

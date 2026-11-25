@@ -424,7 +424,7 @@ def figS2_curves_all(an: Path, out: Path):
     save(fig, out, "figS2_curves_all")
 
 
-def fig4_faults(out: Path, fi_dirs=("results/runD/out", "results/runE/out"), rates_csv="results/analysis/fi_all/rates.csv"):
+def fig4_faults(out: Path, fi_dirs=("results/runD/out", "results/runE/out", "results/runG/out"), rates_csv="results/analysis/fi_all/rates.csv"):
     """Fig. 4: (a) SDC and DUE rate per configuration with Wilson CIs; (b) SDC rate by flipped bit;
     (c) decision-flip rate of near-threshold vs other questions; (d) weight-fault SDC-miss vs distance."""
     import ast
