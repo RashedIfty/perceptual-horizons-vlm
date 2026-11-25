@@ -1,7 +1,0 @@
-model,cfg_full,rel_depth,n,sdc
-Qwen3-VL-4B-Instruct,llm:act:none:all,early,329,0.0
-Qwen3-VL-4B-Instruct,llm:act:none:all,mid,337,0.008902077151335312
-Qwen3-VL-4B-Instruct,llm:act:none:all,late,334,0.0
-Qwen3-VL-4B-Instruct,vision:act:none:all,early,261,0.011494252873563218
-Qwen3-VL-4B-Instruct,vision:act:none:all,mid,245,0.0
-Qwen3-VL-4B-Instruct,vision:act:none:all,late,235,0.0

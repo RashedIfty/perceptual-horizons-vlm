@@ -95,8 +95,8 @@ Qwen2.5-VL-7B-Instruct,singapore_night,"(25, 35]",0.0392156862745098,51
 Qwen2.5-VL-7B-Instruct,singapore_night,"(35, 50]",0.01818181818181818,55
 Qwen2.5-VL-7B-Instruct,singapore_night,"(50, 200]",0.0,36
 Qwen2.5-VL-7B-Instruct,singapore_night_rain,"(0, 15]",0.625,8
-Qwen2.5-VL-7B-Instruct,singapore_night_rain,"(15, 25]",0.0,8
-Qwen2.5-VL-7B-Instruct,singapore_night_rain,"(25, 35]",0.06666666666666667,15
+Qwen2.5-VL-7B-Instruct,singapore_night_rain,"(15, 25]",0.0,10
+Qwen2.5-VL-7B-Instruct,singapore_night_rain,"(25, 35]",0.058823529411764705,17
 Qwen2.5-VL-7B-Instruct,singapore_night_rain,"(35, 50]",0.0,12
 Qwen2.5-VL-7B-Instruct,singapore_night_rain,"(50, 200]",0.0,2
 Qwen3-VL-4B-Instruct,boston_day,"(0, 15]",0.9864864864864865,74

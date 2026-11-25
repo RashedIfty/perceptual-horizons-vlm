@@ -124,7 +124,7 @@ singapore_night,15-25,0.07407407407407407,0.7654320987654321,81,Qwen2.5-VL-7B-In
 singapore_night,25-35,0.0196078431372549,0.9607843137254902,51,Qwen2.5-VL-7B-Instruct,paraphrase
 singapore_night,35-50,0.01818181818181818,0.9818181818181818,55,Qwen2.5-VL-7B-Instruct,paraphrase
 singapore_night,>50,0.0,1.0,36,Qwen2.5-VL-7B-Instruct,paraphrase
-singapore_night_rain,25-35,0.0,0.9333333333333333,15,Qwen2.5-VL-7B-Instruct,paraphrase
+singapore_night_rain,25-35,0.0,0.9411764705882353,17,Qwen2.5-VL-7B-Instruct,paraphrase
 boston_day,<15,0.08108108108108109,0.013513513513513514,74,Qwen3-VL-4B-Instruct,paraphrase
 boston_day,15-25,0.0761904761904762,0.01904761904761905,105,Qwen3-VL-4B-Instruct,paraphrase
 boston_day,25-35,0.09090909090909091,0.08080808080808081,99,Qwen3-VL-4B-Instruct,paraphrase

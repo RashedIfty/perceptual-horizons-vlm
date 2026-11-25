@@ -359,18 +359,23 @@ def fig_safeguard(sg_dir: Path, out: Path, models=("Qwen3-VL-4B-Instruct", "Qwen
             if c == 0:
                 ax.set_ylabel(f"{NICE.get(m, m)}\nFalse alarms (%)")
             ax.set_title(title, color=INK, fontsize=8, loc="left")
-            ax.legend(fontsize=6.2, loc="upper right", handlelength=1.6)
+            if c == 0:
+                ax.legend(fontsize=6.2, loc="upper right", handlelength=1.6)
+            else:
+                ax.legend(fontsize=6.2, loc="upper right", bbox_to_anchor=(1.0, 0.92), handlelength=1.6)
         # cost panel: false alarms at 20% miss vs passes per question (subset; benchmark for gated)
         ax = axes[r, 2]
         g = cur[(cur.model == m) & (cur.set == "baseline_subset") & (cur.miss == 0.2)]
         crc = pd.read_csv(sg_dir / "crc.csv")
         cost = crc[(crc.model == m) & (crc.set == "baseline_subset") & (crc.alpha == 0.2)].set_index("method").passes
         for k in ["vanilla", "fused_g", "fused", "vicrop", "see", "ug"]:
+            if k == "fused_g" and k in cost and abs(cost[k] - cost.get("fused", -1)) < 0.05:
+                continue  # GFZ identical to FZ for this model (no confident answers to skip)
             if k in set(g.method) and k in cost:
                 lab, col, mk = METH[k]
                 fa = g[g.method == k].fa.iloc[0] * 100
                 ax.plot(cost[k], fa, mk, color=col, ms=6, mec="white", mew=0.6)
-                off = {"vanilla": (-4, 9), "fused_g": (-6, -13), "fused": (5, 6)}.get(k, (4, 3))
+                off = {"vanilla": (-4, 9), "fused_g": (-6, -13), "fused": (6, 4), "vicrop": (-8, -13)}.get(k, (4, 3))
                 ax.annotate(lab.replace(" (ours)", "*"), (cost[k], fa),
                             xytext=off, textcoords="offset points", fontsize=6, color=INK)
         ax.set_xscale("log")
@@ -419,6 +424,98 @@ def figS2_curves_all(an: Path, out: Path):
     save(fig, out, "figS2_curves_all")
 
 
+def fig4_faults(out: Path, fi_dirs=("results/runD/out", "results/runE/out"), rates_csv="results/analysis/fi_all/rates.csv"):
+    """Fig. 4: (a) SDC and DUE rate per configuration with Wilson CIs; (b) SDC rate by flipped bit;
+    (c) decision-flip rate of near-threshold vs other questions; (d) weight-fault SDC-miss vs distance."""
+    import ast
+    import sys
+    sys.path.insert(0, "src")
+    import fi_analyze as FA
+    rates = pd.read_csv(rates_csv)
+    df = FA.load(list(fi_dirs))
+    probes = pd.read_parquet("results/probes/probes.parquet").set_index("probe_id")
+    df = df.join(probes[["easy_dist"]], on="probe_id")
+    inj = FA.injection_level(df)
+    SITE = {"vision": "vision", "llm": "language"}
+    fig = plt.figure(figsize=(7.2, 4.9))
+    gs = fig.add_gridspec(3, 2, width_ratios=[1.25, 1], hspace=0.75, wspace=0.42)
+    # (a)
+    ax = fig.add_subplot(gs[:, 0])
+    order = []
+    for m in ("Qwen3-VL-4B-Instruct", "InternVL3-2B-hf"):
+        for kind, bits in (("act", "all"), ("act", "hi"), ("weight", "all")):
+            for site in ("vision", "llm"):
+                for prot in ("none", "ranger"):
+                    cfg = f"{site}:{kind}:{prot}:{bits}"
+                    if ((rates.model == m) & (rates.cfg == cfg)).any():
+                        order.append((m, cfg))
+    y = 0; yt, yl, last_m = [], [], None
+    for m, cfg in order:
+        if last_m is not None and m != last_m:
+            y -= 0.8
+        r = rates[(rates.model == m) & (rates.cfg == cfg)].iloc[0]
+        site, kind, prot, bits = cfg.split(":")
+        for col, key, mk in (("#e87ba4", "SDC", "o"), ("#6f6e69", "DUE", "s")):
+            lo, hi = ast.literal_eval(r[f"{key}_ci"])
+            ax.plot([100 * lo, 100 * hi], [y, y], color=col, lw=1.0, alpha=0.8)
+            ax.plot(100 * r[key], y, mk, color=col, ms=3.6 if key == "SDC" else 3.2, mec="white", mew=0.4,
+                    label=(key if (m, cfg) == order[0] else None))
+        lab = f"{SITE[site]} · {'weight' if kind == 'weight' else ('act. exp.' if bits == 'hi' else 'activation')}{' · R' if prot == 'ranger' else ''}"
+        yt.append(y); yl.append(lab); y -= 1; last_m = m
+    ax.set_yticks(yt, yl, fontsize=5.6)
+    ax.set_xlabel("Injections (%), Wilson 95% CI", fontsize=7)
+    ax.set_xlim(0, 6)
+    ax.grid(axis="x", color=GRID, lw=0.4)
+    ax.legend(fontsize=6, loc="lower right")
+    n1 = sum(1 for m, _ in order if m == "Qwen3-VL-4B-Instruct")
+    ax.text(5.9, yt[0] + 0.6, "Qwen3-VL-4B", ha="right", fontsize=6.5, color=INK, fontweight="bold")
+    ax.text(5.9, yt[n1] + 0.6, "InternVL3-2B", ha="right", fontsize=6.5, color=INK, fontweight="bold")
+    ax.set_title("a  Outcome per configuration", fontsize=8, loc="left", color=INK)
+    # (b) SDC by bit, unprotected, uniform-bit campaigns
+    ax = fig.add_subplot(gs[0, 1])
+    u = inj[inj.cfg_full.str.contains(":none:all")]
+    u = u.assign(kind=u.cfg_full.str.split(":").str[1])
+    for kind, col, off in (("act", "#2a78d6", -0.2), ("weight", "#eb6834", 0.2)):
+        b = u[u.kind == kind].groupby("bit").sdc.mean().reindex(range(16), fill_value=0) * 100
+        ax.bar(np.arange(16) + off, b.values, width=0.4, color=col, label="activation" if kind == "act" else "weight")
+    ax.axvspan(9.5, 15.5, color=GRID, alpha=0.5, lw=0, zorder=0)
+    ax.text(12.5, ax.get_ylim()[1] * 0.92, "exponent / sign", ha="center", fontsize=5.5, color=MUTED)
+    ax.set_xticks([0, 5, 10, 14, 15]); ax.tick_params(labelsize=5.5)
+    ax.set_xlabel("Flipped bit (fp16)", fontsize=6.5); ax.set_ylabel("SDC (%)", fontsize=6.5)
+    ax.legend(fontsize=5.5, loc="upper left")
+    ax.set_title("b  SDC rate by bit", fontsize=8, loc="left", color=INK)
+    # (c) near-threshold vs other questions
+    ax = fig.add_subplot(gs[1, 1])
+    ok = df[df.outcome != "DUE"].copy()
+    ok["flip"] = ok.outcome.str.startswith("SDC"); ok["near"] = (ok.p_gold - 0.5).abs() < 0.1
+    ok["kind"] = ok.cfg_full.str.split(":").str[1]
+    groups = [("Qwen3-VL-4B-Instruct", "act"), ("Qwen3-VL-4B-Instruct", "weight"), ("InternVL3-2B-hf", "act"), ("InternVL3-2B-hf", "weight")]
+    xs = np.arange(len(groups))
+    for j, (near, col, lab) in enumerate(((True, "#e87ba4", "near-threshold"), (False, "#c3c2b7", "other"))):
+        vals = [100 * ok[(ok.model == m) & (ok.kind == k) & (ok.near == near)].flip.mean() for m, k in groups]
+        ax.bar(xs + (j - 0.5) * 0.38, vals, width=0.38, color=col, label=lab)
+    ax.set_yscale("log"); ax.set_ylim(0.005, 20)
+    ax.set_xticks(xs, ["Qwen3\nact.", "Qwen3\nweight", "InternVL3\nact.", "InternVL3\nweight"], fontsize=5.3)
+    ax.tick_params(axis="y", labelsize=5.5); ax.set_ylabel("Decision flips (%)", fontsize=6.5)
+    ax.legend(fontsize=5.5, loc="upper left", ncol=2)
+    ax.set_title("c  Flips by decision margin", fontsize=8, loc="left", color=INK)
+    # (d) weight-fault SDC-miss among detected pedestrians vs distance
+    ax = fig.add_subplot(gs[2, 1])
+    w = ok[(ok.kind == "weight") & (ok.cls == "pedestrian") & (ok.label == 1) & (ok.p_gold >= 0.5)]
+    w = w.assign(dbin=pd.cut(w.easy_dist, [0, 15, 25, 35, 50, 200], labels=["<15", "15–25", "25–35", "35–50", ">50"]))
+    g = w.groupby("dbin", observed=True).outcome.agg(lambda o: (o == "SDC-miss").sum()).astype(int)
+    n = w.groupby("dbin", observed=True).size()
+    lo, hi = proportion_confint(g.values, n.values, method="wilson")
+    x = np.arange(len(g))
+    ax.errorbar(x, 100 * g.values / n.values, yerr=[100 * (g.values / n.values - lo), 100 * (hi - g.values / n.values)],
+                fmt="o-", color="#eb6834", ms=3.5, lw=1.2, capsize=1.5, elinewidth=0.7)
+    ax.set_xticks(x, list(g.index), fontsize=5.5); ax.tick_params(axis="y", labelsize=5.5)
+    ax.set_xlabel("Distance to pedestrian (m)", fontsize=6.5); ax.set_ylabel("SDC-miss (%)", fontsize=6.5)
+    ax.set_ylim(0, None); ax.grid(axis="y", color=GRID, lw=0.4)
+    ax.set_title("d  Weight faults: misses by distance", fontsize=8, loc="left", color=INK)
+    save(fig, out, "fig5_faults")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--analysis", default="results/analysis/all")
@@ -434,6 +531,8 @@ if __name__ == "__main__":
         figS1_lift(Path(a.meta), Path(a.out))
     if "overview" in a.only:
         fig1_workflow(Path(a.out))
+    if "faults" in a.only:
+        fig4_faults(Path(a.out))
     if "supp" in a.only:
         fig2 = Path(a.analysis); figS2_curves_all(fig2, Path(a.out))
     if "safeguard" in a.only:

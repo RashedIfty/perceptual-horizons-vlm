@@ -1,5 +1,0 @@
-model,cfg_full,component,n,sdc
-Qwen3-VL-4B-Instruct,llm:act:none:all,attention,256,0.0
-Qwen3-VL-4B-Instruct,llm:act:none:all,mlp,744,0.004032258064516129
-Qwen3-VL-4B-Instruct,vision:act:none:all,attention,250,0.004
-Qwen3-VL-4B-Instruct,vision:act:none:all,mlp,750,0.005333333333333333

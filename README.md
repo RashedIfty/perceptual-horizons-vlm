@@ -30,7 +30,7 @@ The study tests seven open vision-language models (VLMs) as pedestrian detectors
 | `data/model_scores/` | yes-propensity ψ of every model, view and baseline for every question (`*.parquet`) and per-run statistics (`*.stats.json`) |
 | `results/` | analysis outputs used for the figures and tables |
 
-Fault-injection logs of the final campaign will be added when the campaign completes.
+Fault-injection outcomes are stored per configuration as `<model>__fi_<site>_<fault>_<protection>[_hi].parquet` (one row per question and injection, with layer, bit and values before and after the flip), together with the fault-free reference runs (`__fi_golden.parquet`) and the profiled Ranger bounds (`runD`: activation faults on Qwen3-VL-4B; `runE`: weight and exponent-bit faults on Qwen3-VL-4B and all configurations on InternVL3-2B). `runF`/`runF2` hold the SEE outputs for Qwen2.5-VL-3B, and `runB2/Qwen2.5-VL-7B-Instruct_merged.parquet` the complete Qwen2.5-VL-7B scores (all 3,359 frames).
 
 ## Reproducing
 
